@@ -1,0 +1,80 @@
+### underscorex are some basic extensions for underscore
+
+- basic, oriented on common use
+- small
+- server and client
+- Extend built-in JavaScript objects to implement ECMA5 features, if missing
+
+Special thanks go to Jeremy Ashkenas for underscore.
+
+
+### Policy
+
+1. I want that _some_ ECMA5 stuff is available in _all_ browsers:
+
+  * Object.keys (also in _)
+  * Date.prototype.toISOString
+  * JSON.parse
+  * JSON.stringify
+  * Function.prototype.bind (also in _)
+  * String.prototype.trim
+  * Array.prototype.indexOf/lastIndexOf (also in _)
+  * Array.prototype.every/some/forEach/map/filter (also in _)
+  * Array.prototype.reduce/reduceRight (also in _)
+
+  Omitted:
+
+  * Object.getPrototypeOf
+  * Date.now
+  * Array.isArray
+
+  Not possible to implement correctly, if your engine does not support it:
+
+  * Object.create
+  * Object.defineProperty
+  * Object.defineProperties
+  * Object.seal
+  * Object.freeze
+  * Object.preventExtensions
+  * Object.isSealed
+  * Object.isFrozen
+  * Object.isExtensible
+  * Object.getOwnPropertyDescriptor
+  * Object.getOwnPropertyNames
+  * Property access on strings
+  * Reserved words as property names
+  * Strict mode
+
+  See http://kangax.github.com/es5-compat-table/
+
+  Let's grab existing implementations from _ or other libs and do that.
+  Reusing _'s functions will be slower, but it affects only old browsers.
+
+2. I want to use basic stuff beyond ECMA5 - the stuff that is already included in _
+
+3. I add my own _ mixins:
+
+  * _.log(...) Alias of console.log
+  * _.extendDeep(a, b, preserve_a?) Extend object a with b by deep tree recursion
+  * _.escapeXml(string, newline?)
+  * _.simple(string) Get a simplified version of a string
+  * _.escapeForRegExp(string)
+  * _.MIN_INT 
+  * _.MAX_INT
+
+4. More specific mixins live in separate files.
+
+### How to
+
+	require('underscorex');
+
+
+### Dependencies
+
+http://documentcloud.github.com/underscore/
+
+
+### Used code
+
+http://code.google.com/p/ddr-ecma5/
+http://www.JSON.org/json2.js
