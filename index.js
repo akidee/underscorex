@@ -13,7 +13,7 @@ require('underscore/underscore');
 
 var ap = Array.prototype,
 	slice = ap.slice;
-
+	
 
 
 
@@ -101,6 +101,27 @@ _.mixin({
 			}
 			return "\\" + ch;
 		}); // String
+	},
+	
+	locale: function (obj, locale) {
+	
+		if (!(obj instanceof Object)) return;
+		
+		
+		locale = ''+locale || 'en';
+		
+		if (obj[locale] !== undefined) return obj[locale];
+		
+		
+		parts = locale.split('_');
+		while (parts.pop()) {
+		
+			locale = parts.join('_');
+			if (obj[locale] !== undefined) return obj[locale];
+		}
+		
+		
+		return obj.en;
 	}
 });
 

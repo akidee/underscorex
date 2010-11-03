@@ -16,7 +16,7 @@ delete
 
 
 
-require('./');
+require('../');
 var a = require('assert');
 
 
