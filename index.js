@@ -9,7 +9,7 @@ JavaScript library that is created around underscore and adds native extensions 
 
 
 
-require('underscore/underscore');
+require('underscore');
 
 var ap = Array.prototype,
 	slice = ap.slice;

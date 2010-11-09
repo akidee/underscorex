@@ -1,0 +1,13 @@
+{
+  "name"          : "underscorex",
+  "description"   : "underscorex are some basic mixins and extensions for underscore",
+  "url"           : "https://github.com/akidee/underscorex",
+  "keywords"      : ["util", "functional", "server", "client", "browser", "underscore", "ecma5"],
+  "author"        : "Andreas Kalsch <mail@akidee.de>",
+  "contributors"  : [],
+  "dependencies"  : [],
+  "lib"           : ".",
+  "main"          : "index.js",
+  "version"       : "0.1",
+  "dependencies": { "underscore": ">= 1.1.2" }
+}
