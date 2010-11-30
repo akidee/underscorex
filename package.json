@@ -9,5 +9,5 @@
   "lib"           : ".",
   "main"          : "index.js",
   "version"       : "0.1.0",
-  "dependencies": { "underscore": ">= 1.1.2" }
+  "dependencies": { "underscore": ">=1.1.2" }
 }

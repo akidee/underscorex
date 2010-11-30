@@ -105,7 +105,7 @@ _.mixin({
 	
 	locale: function (obj, locale) {
 	
-		if (!(obj instanceof Object)) return;
+		if (!(obj instanceof Object)) return obj;
 		
 		
 		locale = ''+locale || 'en';
