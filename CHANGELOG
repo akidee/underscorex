@@ -1,0 +1,5 @@
+0.1.0
+	- First publication on npm
+
+0.1.1
+	- From underscore 1.1.3, global._ is not defined any more. I considered this change.

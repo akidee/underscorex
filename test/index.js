@@ -16,7 +16,7 @@ delete
 
 
 
-require('../');
+var _ = require('../');
 var a = require('assert');
 
 
@@ -125,4 +125,4 @@ a.strictEqual(
 
 // _.log
 
-_.log('Passed', '!');
+_.log('Passed');

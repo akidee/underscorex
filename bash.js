@@ -1,32 +1,36 @@
-var escapeChars = ['\\', '\''];
+module.exports = function (_) {
 
-_.mixin({
+	var escapeChars = ['\\', '\''];
 
-	toBash: function (object, prefix) {
+	_.mixin({
 
-		var prefix = ''+(prefix || ''),
-			definitions = [],
-			keys = _.keys(object);
-		for (var i = 0, li = keys.length, k, v; i < li; i++) {
+		toBash: function (object, prefix) {
 
-			k = keys[i], v = object[k];
+			var prefix = ''+(prefix || ''),
+				definitions = [],
+				keys = _.keys(object);
+			for (var i = 0, li = keys.length, k, v; i < li; i++) {
 
-			if (v === true || v === false) v = parseInt(v);
-			else if (typeof v === 'number' || typeof v === 'string') {
+				k = keys[i], v = object[k];
+
+
+				if (v === true || v === false) v = v ? 1 : 0;
+				else if (typeof v === 'number' || typeof v === 'string') {
 			
-				v = ''+v;
-				escapeChars.forEach(function (char) {
+					v = ''+v;
+					escapeChars.forEach(function (char) {
 				
-					v = v.replace(char, '\\'.char);
-				});
-				v = '$\''+v+'\'';
-			}
-			else continue;
+						v = v.replace(char, '\\'.char);
+					});
+					v = '$\''+v+'\'';
+				}
+				else continue;
 			
-			
-			definitions.push(prefix+k+'='+v);
-		}
 
-		return definitions.join('\n');
-	}
-});
+				definitions.push(prefix+k+'='+v);
+			}
+
+			return definitions.join('\n');
+		}
+	});
+}

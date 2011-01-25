@@ -1,5 +1,5 @@
-require('../');
-require('../object');
+var _ = require('../');
+require('../object')(_);
 var a = require('assert');
 
 
@@ -167,4 +167,4 @@ a.deepEqual(
 
 
 
-_.log('Passed', '!');
+_.log('Passed');
