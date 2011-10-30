@@ -1,94 +1,89 @@
 Underscorex are some basic extensions for underscore
 
-- basic, oriented on common use
+- basic, common use
 - small
-- server and client
-- Extend built-in JavaScript objects to implement ECMA5 features, if missing
-
-Special thanks go to Jeremy Ashkenas for underscore.
+- all environments, server and client
+- Extend built-in JavaScript objects to implement ECMA5 functionality, if missing
 
 
 
 Policy
 
-1. I want that _some_ ECMA5 stuff is available in _all_ browsers:
+1. _Some_ ECMA5 functionality must be available in _all_ JavaScript engines:
 
-  - Object.keys (also in _)
-  - Date.prototype.toISOString
-  - JSON.parse/stringify
-  - Function.prototype.bind (also in _)
-  - String.prototype.trim
-  - Array.prototype.indexOf/lastIndexOf (also in _)
-  - Array.prototype.every/some/forEach/map/filter (also in _)
-  - Array.prototype.reduce/reduceRight (also in _)
+  Object.keys
+  Date.prototype.toISOString
+  JSON.parse/stringify
+  Function.prototype.bind
+  String.prototype.trim
+  Array.prototype.indexOf/lastIndexOf
+  Array.prototype.every/some/forEach/map/filter
+  Array.prototype.reduce/reduceRight
 
   Omitted:
 
-  - Object.getPrototypeOf
-  - Date.now
-  - Array.isArray
+  Object.getPrototypeOf
+  Date.now
+  Array.isArray
 
-  Not possible to implement correctly, if your engine does not support it:
+  It is not possible to correctly implement further ECMA5 functionality, if your engine does not support it. For example, Object.seal or strict mode cannot be mimicked. See http://kangax.github.com/es5-compat-table/
 
-  - Object.create
-  - Object.defineProperty
-  - Object.defineProperties
-  - Object.seal
-  - Object.freeze
-  - Object.preventExtensions
-  - Object.isSealed
-  - Object.isFrozen
-  - Object.isExtensible
-  - Object.getOwnPropertyDescriptor
-  - Object.getOwnPropertyNames
-  - Property access on strings
-  - Reserved words as property names
-  - Strict mode
+2. Functionality _beyond_ ECMA5 - functions that are already included in underscore:
 
-  See http://kangax.github.com/es5-compat-table/
+  See http://documentcloud.github.com/underscore/
 
-  Let's grab existing implementations from _ or other libs and do that.
-  Reusing _'s functions will be slower, but it affects only old browsers.
+3. My own underscore mixins:
 
-2. I want to use basic stuff beyond ECMA5 - the stuff that is already included in _
+  _.log
+    Alias of console.log
 
-3. I add my own _ mixins:
+  _.extendDeep(a, b, preserve_a?)
+    Extend object a with b by deep tree recursion
 
-  - _.log(...) Alias of console.log
-  - _.extendDeep(a, b, preserve_a?) Extend object a with b by deep tree recursion
-  - _.escapeXml(string, newline?)
-  - _.simple(string) Get a simplified version of a string
-  - _.escapeForRegExp(string)
-  - _.MIN_INT 
-  - _.MAX_INT
+  _.objectToArray(object)
+    Transforms an object to a list of lists with 2 elements each (key and value). Example:
 
-4. More specific mixins live in separate files.
+    _.objectToArray({ a: 1, b: true }) --> [ [ a, 1 ], [ b, true ] ]
+
+    Applying Array.prototype functionality to objects is very useful, but underscore's collection utilities return an array of the values of the passed objects and omit the keys. But we don't want to miss the keys and filter, sort, ... by them as well.
+
+    For example, you can sort an object by keys by sorting the result of _.objectToArray(object) and then transform it back to an object with _.arrayToObject. The ECMA standard does _not_ force implementors to iterate over objects in the same order as the properties were defined, but all JS engines will do that for non-numeric properties. See http://stackoverflow.com/questions/280713/elements-order-in-a-for-in-loop/280861#280861
+
+  _.arrayToObject(array)
+    Transforms a list of lists - with key and value each - back to an object. Example:
+    _.arrayToObject([ [ a, 1 ], [ 5, true ] ]) --> { 'a': 1, '5': true }
+
+  _.escapeXml(string, newline?)
+
+  _.simple(string)
+    Get a simplified version of a string
+
+  _.escapeForRegExp(string)
+    Escape characters to make them non-semantic when using the string in a regular expression
+
+  _.locale(object, locale?)
+    Examples:
+    var data = { de_DE: 'Zentrum', en_UK: 'centre', en: 'center' }
+    _.locale(data, 'de') --> 'Zentrum'
+    _.locale(data) --> 'center'
+
+  _.MAX_INT
+    Maximum integer in JavaScript. See http://www.irt.org/script/1031.htm
+
+  _.MIN_INT
+    0 - _.MAX_INT
 
 
 
 How to - server
 
-	var _ = require('underscorex');
-
-To add specific mixins:
-
-	require('underscorex/bash')(_)
-	require('underscorex/object')(_)
+var _ = require('underscorex');
 
 	
 
 How to - server
 
 Support for yabble ( http://github.com/jbrantly/yabble ) is coming soon.
-
-
-
-Dependencies
-
-http://documentcloud.github.com/underscore/ (>=1.1.3)
-
-Important note: From underscorex 0.1.1 (underscore >=1.1.3), _ must be defined locally.
-There is no global._ any more.
 
 
 
