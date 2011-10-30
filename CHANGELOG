@@ -1,5 +1,12 @@
 0.1.0
-	- First publication on npm
+	First publication on npm
 
 0.1.1
-	- From underscore 1.1.3, global._ is not defined any more. I considered this change.
+	Considere that, from underscore 1.1.3 on, global._ is not defined any more
+
+0.2.0
+	Remove specific mixins
+		Object mixins are now at https://github.com/akidee/objecttools
+		Bash mixin will be published as a separate module
+	Added _.objectToArray and _.arrayToObject
+	Added example

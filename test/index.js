@@ -55,6 +55,54 @@ a.deepEqual(
 
 
 
+// _.objectToArray (Numerical keys are omitted! Strictly, this test could fail.)
+
+a.deepEqual(
+	_.objectToArray({
+		a: 1,
+		_ok: true,
+		b: [ 1, 2, 3 ],
+		c: {
+			a: b
+		}
+	}),
+	[
+		[ 'a', 1 ],
+		[ '_ok', true ],
+		[ 'b', [ 1, 2, 3 ] ],
+		[ 'c', {
+			a: b
+		} ]
+	]
+)
+
+
+
+
+// _.arrayToObject
+
+a.deepEqual(
+	_.arrayToObject([
+		[ 'a', 1 ],
+		[ '_ok', true ],
+		[ 'b', [ 1, 2, 3 ] ],
+		[ 'c', {
+			a: b
+		} ]
+	]),
+	{
+		a: 1,
+		_ok: true,
+		b: [ 1, 2, 3 ],
+		c: {
+			a: b
+		}
+	}
+)
+
+
+
+
 // _.simple
 
 a.strictEqual(
