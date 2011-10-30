@@ -8,7 +8,6 @@ JavaScript library that is created around underscore and adds native extensions 
 
 
 
-
 var _ = exports = module.exports = require('underscore');'...';
 
 var ap = Array.prototype,
@@ -66,6 +65,28 @@ _.mixin({
 		
 		return a;
 	},
+
+    objectToArray: function (object) {
+        
+        var array = []
+        for (var k in object) {
+            if (!object.hasOwnProperty(k)) continue
+
+
+            array.push([ k, object[k] ])
+        }
+        return array
+    },
+
+    arrayToObject: function (array) {
+  
+        var object = {}
+        for (var l = array.length, i = 0, el; i < l; i++) {
+            el = array[i]
+            object[el[0]] = el[1]
+        }
+        return object
+    },
 	
 	escapeXml: function (string, newline) {
 	
@@ -578,8 +599,8 @@ if (!JSON) {
 // and wrap them in braces.
 
             v = partial.length === 0 ? '{}' : gap ?
-                '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' :
-                '{' + partial.join(',') + '}';
+                '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + "}" :
+                "{" + partial.join(',') + "}";
             gap = mind;
             return v;
         }
@@ -688,7 +709,7 @@ if (!JSON) {
 // replace all simple value tokens with ']' characters. Third, we delete all
 // open brackets that follow a colon or comma or that begin the text. Finally,
 // we look to see that the remaining characters are only whitespace or ']' or
-// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+// ',' or ':' or "{" or "}". If that is so, then the text is safe for eval.
 
             if (/^[\],:{}\s]*$/
                     .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
@@ -696,7 +717,7 @@ if (!JSON) {
                         .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
 // In the third stage we use the eval function to compile the text into a
-// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+// JavaScript structure. The "{" operator is subject to a syntactic ambiguity
 // in JavaScript: it can begin a block or an object literal. We wrap the text
 // in parens to eliminate the ambiguity.
 
