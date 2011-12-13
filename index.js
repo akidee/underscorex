@@ -1,73 +1,104 @@
 /*
-
-(c) 2010 Andreas Kalsch
-underscorex is freely distributable under the MIT license.
-JavaScript library that is created around underscore and adds native extensions to older browsers
-
+underscorex v0.3.0
+(c) 2010-2011 Andreas Kalsch
+https://github.com/akidee/underscorex
 */
 
 
 
-var _ = exports = module.exports = require('underscore');'...';
+
+var _ = exports = module.exports = ('at', require('underscore'))
+if (typeof window !== 'undefined')
+	window._ = exports
 
 var ap = Array.prototype,
-	slice = ap.slice;
+	slice = ap.slice,
+	each = _.each,
+	hasOwnProperty = Object.prototype.hasOwnProperty
 	
 
 
 
 /* Own mixins
  */
- 
+
 _.mixin({
 
-	log: console && typeof console.log === 'function'
-		? function () {
-	
-			console.log.apply(console, arguments);
-		}
-		: function () {},
-		
-	extendDeep: function (a, b, preserve_a) {
+	log: function () {
 
-		if (!b) return a;
-		
-		
-		var keys = _.keys(b),
-			key;
-			
-		if (!preserve_a) {
-		
-			for (var i = 0, len = keys.length; i < len; ++i) {
-				
-				key = keys[i];
-				if (typeof b[key] === 'object' && !(b[key] instanceof Array))
-			
-					a[key] = _.extendDeep((a[key] = a[key] || {}), b[key]);
-				else
-			
-					a[key] = b[key];
+		typeof console !== 'undefined'
+			&& console.log
+			&& console.log.apply(console, arguments)
+	},
+
+	isRecursable: function isRecursable (obj) {
+
+		return obj instanceof Object
+			&& !(obj instanceof Array)
+			&& !(obj instanceof Date)
+			&& !(obj instanceof Function)
+			&& !(obj instanceof RegExp)
+	},
+
+	extend: function (obj) {
+	
+		each(
+			slice.call(arguments, 1),
+			function (source) {
+				for (var prop in source) {
+					if (hasOwnProperty.call(source, prop)) obj[prop] = source[prop]
+				}
 			}
-		}
-		else {
+		)
 		
-			for (var i = 0, len = keys.length; i < len; ++i) {
+		return obj
+	},
+		
+	extendDeep: function extendDeep (obj) {
+
+		var argsLen = arguments.length,
+			args = slice.call(arguments, 1),
+			preserve = args[args.length - 1] instanceof Object
+				? false
+				: !!args[args.length - 1]
+
+		each(
+			args,
+			!preserve
+				? function (source) {
+					for (var prop in source) {
 				
-				key = keys[i];
-				if (typeof b[key] === 'object' && !(b[key] instanceof Array))
-			
-					a[key] = _.extendDeep((a[key] = a[key] || {}), b[key], preserve_a);
-				else if (!(key in a))
-			
-					a[key] = b[key];
-			}
-		}
+						if (!hasOwnProperty.call(source, prop)) continue
+
+
+						if (isRecursable(source[prop])) {
+							if (!isRecursable(obj[prop]))
+								obj[prop] = {}
+							obj[prop] = extendDeep(obj[prop], source[prop])
+						}
+						else
+							obj[prop] = source[prop]
+					}
+				}
+				: function (source) {
+					for (var prop in source) {
+				
+						if (!hasOwnProperty.call(source, prop)) continue
+
+
+						if (!(prop in obj))
+							obj[prop] = source[prop]
+						else if (isRecursable(obj[prop]) && isRecursable(source[prop]))
+							obj[prop] = extendDeep(obj[prop], source[prop], true)
+					}
+				}
+		)
 		
-		return a;
+		return obj
 	},
 
     objectToArray: function (object) {
-        
+
         var array = []
         for (var k in object) {
             if (!object.hasOwnProperty(k)) continue
@@ -79,7 +110,7 @@ _.mixin({
     },
 
     arrayToObject: function (array) {
-  
+
         var object = {}
         for (var l = array.length, i = 0, el; i < l; i++) {
             el = array[i]
@@ -94,61 +125,61 @@ _.mixin({
 			.replace(/'/g, '&#039;')
 			.replace(/\"/g, '&quot;')
 			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;');
+			.replace(/>/g, '&gt;')
 		
-		if (newline) s = s.replace(/\n/g, '<br/>');
+		if (newline)
+			s = s.replace(/\n/g, '<br/>')
 	
-		return s;
+		return s
 	},
 	
 	simple: function (string, preserveCase) {
 	
-		var copy = string.replace(/\s+/g, ' ').trim();
+		var copy = string.replace(/\s+/g, ' ').trim()
 		return preserveCase
 			? copy
-			: copy.toLowerCase();
+			: copy.toLowerCase()
 	},
 	
 	escapeForRegExp: function (/*String*/str, /*String?*/except) {
 	
-		//	summary:
-		//		Adds escape sequences for special characters in regular expressions
-		// except:
-		//		a String with special characters to be left unescaped
-	
-		return str.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(ch){
-			if(except && except.indexOf(ch) != -1){
-				return ch;
-			}
-			return "\\" + ch;
-		}); // String
+		return str.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function (ch) {
+			if (except && except.indexOf(ch) != -1)
+				return ch
+			return "\\" + ch
+		})
 	},
 	
 	locale: function (obj, locale) {
 	
-		if (!(obj instanceof Object)) return obj;
+		if (!(obj instanceof Object))
+			return obj
 		
 		
-		locale = ''+locale || 'en';
+		locale = ''+locale || 'en'
 		
-		if (obj[locale] !== undefined) return obj[locale];
+		if (obj[locale] !== undefined)
+			return obj[locale]
 		
 		
-		parts = locale.split('_');
+		parts = locale.split('_')
 		while (parts.pop()) {
 		
-			locale = parts.join('_');
-			if (obj[locale] !== undefined) return obj[locale];
+			locale = parts.join('_')
+			if (locale in obj)
+				return obj[locale]
 		}
 		
 		
-		return obj.en;
+		return obj.en
 	}
-});
+})
 
 // See http://www.irt.org/script/1031.htm
-_.MIN_INT = -9007199254740992;
-_.MAX_INT = -_.MIN_INT;
+_.MIN_INT = -9007199254740992
+_.MAX_INT = -_.MIN_INT
+
+var isRecursable = _.isRecursable
 
 /* / Own mixins
  */
@@ -156,58 +187,67 @@ _.MAX_INT = -_.MIN_INT;
 
 
 
-Object.keys || (Object.keys = _.keys);
+Object.keys || (Object.keys = _.keys)
 
 Function.prototype.bind || (Function.prototype.bind = function () {
-	var args = slice.call(arguments);
-	args.unshift(this);
-	return _.bind.apply(_, args);
-});
+	var args = slice.call(arguments)
+	args.unshift(this)
+	return _.bind.apply(_, args)
+})
 
+var indexOf = _.indexOf
 ap.indexOf || (ap.indexOf = function (item) {
 	
-	return _.indexOf(this, item);
-});
+	return indexOf(this, item)
+})
 
+var lastIndexOf = _.lastIndexOf
 ap.lastIndexOf || (ap.lastIndexOf = function (item) {
 	
-	return _.lastIndexOf(this, item);
-});
+	return lastIndexOf(this, item)
+})
 
+var every = _.every
 ap.every || (ap.every = function (iterator, context) {
 	
-	return _.every(this, iterator, context);
-});
+	return every(this, iterator, context)
+})
 
+var some = _.some
 ap.some || (ap.some = function (iterator, context) {
 	
-	return _.some(this, iterator, context);
-});
+	return some(this, iterator, context)
+})
 
+var forEach = _.forEach
 ap.forEach || (ap.forEach = function (iterator, context) {
 	
-	return _.forEach(this, iterator, context);
-});
+	return forEach(this, iterator, context)
+})
 
+var map = _.map
 ap.map || (ap.map = function (iterator, context) {
 	
-	return _.map(this, iterator, context);
-});
+	return map(this, iterator, context)
+})
 
+var filter = _.filter
 ap.filter || (ap.filter = function (iterator, context) {
 	
-	return _.filter(this, iterator, context);
-});
+	return filter(this, iterator, context)
+})
 
+var reduce = _.reduce
 ap.reduce || (ap.reduce = function (iterator, memo, context) {
 	
-	return _.reduce(this, iterator, memo, context);
-});
+	return reduce(this, iterator, memo, context)
+})
 
+var reduceRight = _.reduceRight
 ap.reduceRight || (ap.reduceRight = function (iterator, memo, context) {
 	
-	return _.reduceRight(this, iterator, memo, context);
-});
+	return reduceRight(this, iterator, memo, context)
+})
 
 
 
@@ -246,9 +286,9 @@ Date.prototype.toISOString || (Date.prototype.toISOString = (function(){
 	
 })() );
 
-String.prototype.trim || (String.prototype.trim = function(){
-	return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-});
+String.prototype.trim || (String.prototype.trim = function() {
+	return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
+})
 
 /* /ddr-ECMA5 JavaScript library, version 1.0RC1
  */

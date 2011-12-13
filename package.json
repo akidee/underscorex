@@ -1,7 +1,7 @@
 {
 	"name": "underscorex",
-	"version": "0.2.0",
-	"description": "underscorex are some basic mixins and extensions for underscore",
+	"version": "0.3.0",
+	"description": "underscorex are some basic extensions for underscore.js",
 	"homepage": "https://github.com/akidee/underscorex",
 	"author": {
 		"name": "Andreas Kalsch",
@@ -14,16 +14,17 @@
 	"dependencies": {
 		"underscore": ">=1.1.3"
 	},
-	"devDependencies": {
-		
-	},
+	"devDependencies": {},
 	"keywords": [
 		"util",
+		"utility",
 		"functional",
 		"server",
 		"client",
 		"browser",
 		"underscore",
-		"ecma5"
+		"underscore.js",
+		"ecma5",
+		"basic"
 	]
 }

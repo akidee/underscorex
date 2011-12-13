@@ -1,15 +1,16 @@
-Underscorex are some basic extensions for underscore
+Underscorex v0.3.0 are some basic extensions for underscore.js
 
-- basic, common use
-- small
-- all environments, server and client
-- Extend built-in JavaScript objects to implement ECMA5 functionality, if missing
+  - extends JavaScript natives to implement missing ECMA5 functionality
+  - provides basic functionality
+  - runs in all environments, server and client
+  - small footprint
 
 
 
-Policy
 
-1. _Some_ ECMA5 functionality must be available in _all_ JavaScript engines:
+Features
+
+1. Some ECMA5 functionality must be available in all JavaScript engines:
 
   Object.keys
   Date.prototype.toISOString
@@ -20,25 +21,23 @@ Policy
   Array.prototype.every/some/forEach/map/filter
   Array.prototype.reduce/reduceRight
 
-  Omitted:
+  See http://kangax.github.com/es5-compat-table/
 
-  Object.getPrototypeOf
-  Date.now
-  Array.isArray
+2. Functionality beyond ECMA5 - functions that are already included in underscore.js: http://documentcloud.github.com/underscore
 
-  It is not possible to correctly implement further ECMA5 functionality, if your engine does not support it. For example, Object.seal or strict mode cannot be mimicked. See http://kangax.github.com/es5-compat-table/
+3. My own mixins:
 
-2. Functionality _beyond_ ECMA5 - functions that are already included in underscore:
+  _.log(...)
+    Alias of console.log. Can be called even if the console object is not defined
 
-  See http://documentcloud.github.com/underscore/
+  _.isRecursable(object)
+    Returns true if object is recursable - in opposite to instances of Date, Function or simple types
 
-3. My own underscore mixins:
+  _.extend(object, source, ...)
+    Overwrites underscore's _.extend to iterate over own properties only
 
-  _.log
-    Alias of console.log
-
-  _.extendDeep(a, b, preserve_a?)
-    Extend object a with b by deep tree recursion
+  _.extendDeep(object, source, ..., preserve = false)
+    Extends object with other objects by deep tree recursion. Does not consider circular references. To preserve existing properties of object, pass true as the last argument
 
   _.objectToArray(object)
     Transforms an object to a list of lists with 2 elements each (key and value). Example:
@@ -51,39 +50,80 @@ Policy
 
   _.arrayToObject(array)
     Transforms a list of lists - with key and value each - back to an object. Example:
+
     _.arrayToObject([ [ a, 1 ], [ 5, true ] ]) --> { 'a': 1, '5': true }
 
-  _.escapeXml(string, newline?)
+  _.escapeXml(string, newline = false)
 
-  _.simple(string)
-    Get a simplified version of a string
+  _.simple(string, preserveCase = false)
+    Get a simplified version of a string by trimming, reducing whitespace and setting it to lower case, which can be prohibited by passing true as the second argument
 
   _.escapeForRegExp(string)
-    Escape characters to make them non-semantic when using the string in a regular expression
+    Escape characters to make a string non-semantic when using it in a regular expression
 
   _.locale(object, locale?)
     Examples:
+
     var data = { de_DE: 'Zentrum', en_UK: 'centre', en: 'center' }
     _.locale(data, 'de') --> 'Zentrum'
     _.locale(data) --> 'center'
 
   _.MAX_INT
-    Maximum integer in JavaScript. See http://www.irt.org/script/1031.htm
+    Maximum integer in JavaScript: 9007199254740992
+    See http://www.irt.org/script/1031.htm
 
   _.MIN_INT
     0 - _.MAX_INT
 
 
 
-How to - server
 
-var _ = require('underscorex');
+Use it in node
+
+var _ = require('underscorex')
 
 	
 
-How to - server
 
-Support for yabble ( http://github.com/jbrantly/yabble ) is coming soon.
+Use it in the browser (with Yabble)
+
+The best way to use CommonJS modules with their dependencies on the client is wrapping them and loading them asynchronously with Yabble. Put /client/yabble/underscore.js to the correct path on your server, and that's it. The file already includes underscore.js v1.2.3
+
+1) To simply use underscorex:
+
+<script src="https://raw.github.com/akidee/yabble/master/lib/yabble.js"></script>
+<script src="/js/underscorex.js"></script>
+<script>
+
+	_.log('ready')
+
+</script>
+
+2) Pro mode: Load your project asynchronously, in this case only underscorex:
+
+<script src="https://raw.github.com/akidee/yabble/master/lib/yabble.js"></script>
+<script>
+
+	require.useScriptTags()
+	require.setModuleRoot('/js')
+	require.ensure([ 'underscorex' ], function (require) {
+
+		_.log('ready')
+	})
+
+</script>
+
+It is recommended to serve static files with gzip!
+
+
+
+
+Tested in
+
+  node.js 0.4-latest
+  IE 5.5-8, FF 3-8, Chrome 1-15, Opera 10-11.5, Safari 4-5.1.2
+  Mobile Safari 4.0
+
 
 
 
