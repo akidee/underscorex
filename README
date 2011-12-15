@@ -87,6 +87,13 @@ Features
 
 
 
+Installation
+
+npm install underscorex
+
+
+
+
 Use it in node
 
 var _ = require('underscorex')
