@@ -2,3 +2,4 @@
 *.pid
 node_modules
 pids
+PRIVATE

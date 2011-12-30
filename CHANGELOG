@@ -18,3 +18,8 @@
 	Performance improvements
 	Test fixes
 	Provide version for browser
+
+0.3.1
+	Additions: Array.isArray, Date.now
+	Correction: Be sure that used _ functionality has the same API as ECMA5
+	Updated 3rd party code

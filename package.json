@@ -1,6 +1,6 @@
 {
 	"name": "underscorex",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "underscorex are some basic extensions for underscore.js",
 	"homepage": "https://github.com/akidee/underscorex",
 	"author": {
@@ -25,6 +25,8 @@
 		"underscore",
 		"underscore.js",
 		"ecma5",
-		"basic"
+		"basic",
+		"javascript",
+		"extension"
 	]
 }
