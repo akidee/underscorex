@@ -159,7 +159,7 @@ $AP.indexOf || ($AP.indexOf = function(searchElement){
 	}
 
 	for( ; i < len; ++i ) {
-		if( this.hasOwnProperty(String(i)) && this[i] ===  searchElement )
+		if( i in this && this[i] ===  searchElement )
 			return i;
 	}
 
@@ -188,7 +188,7 @@ $AP.lastIndexOf || ($AP.lastIndexOf = function(searchElement){
 	}
 
 	for( ; i >= 0; --i ) {
-		if( this.hasOwnProperty(String(i)) && this[i] ===  searchElement )
+		if( i in this && this[i] ===  searchElement )
 			return i;
 	}
 
