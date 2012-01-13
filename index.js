@@ -1,5 +1,5 @@
 /*
-underscorex v0.3.1
+underscorex v0.3.2
 (c) 2010-2011 Andreas Kalsch
 https://github.com/akidee/underscorex
 */
@@ -7,198 +7,116 @@ https://github.com/akidee/underscorex
 
 
 
-var _ = exports = module.exports = ('at', require('underscore'))
-if (typeof window !== 'undefined')
-	window._ = exports
+if (typeof require === 'function') {
+
+	var _ = exports = module.exports = ('at', require('underscore'))
+}
+// else window._ exists
+
+
+
 
 var ap = Array.prototype,
 	slice = ap.slice,
 	each = _.each,
-	hasOwnProperty = Object.prototype.hasOwnProperty
+	hasOwnProperty = Object.prototype.hasOwnProperty,
+	isTest = typeof __UNDERSCOREX_TEST !== 'undefined'
 	
-
-
-
-Object.keys || (Object.keys = _.keys)
-
-Array.isArray || (Array.isArray = _.isArray)
-
-var bind = _.bind
-Function.prototype.bind || (Function.prototype.bind = function () {
-	var args = slice.call(arguments)
-	args.unshift(this)
-	return bind.apply(_, args)
-})
-
-var every = _.every
-ap.every || (ap.every = function (iterator, context) {
-	
-	return every(this, iterator, context)
-})
-
-var some = _.some
-ap.some || (ap.some = function (iterator, context) {
-	
-	return some(this, iterator, context)
-})
-
-var forEach = _.forEach
-ap.forEach || (ap.forEach = function (iterator, context) {
-	
-	return forEach(this, iterator, context)
-})
-
-var map = _.map
-ap.map || (ap.map = function (iterator, context) {
-	
-	return map(this, iterator, context)
-})
-
-var filter = _.filter
-ap.filter || (ap.filter = function (iterator, context) {
-	
-	return filter(this, iterator, context)
-})
-
-var reduce = _.reduce
-ap.reduce || (ap.reduce = function (iterator, memo) {
-	
-	return reduce(this, iterator, memo)
-})
-
-var reduceRight = _.reduceRight
-ap.reduceRight || (ap.reduceRight = function (iterator, memo) {
-	
-	return reduceRight(this, iterator, memo)
-})
-
 
 
 
 /*
- *  ddr-ECMA5 JavaScript library, version 1.2.2RC
- *  (c) 2010 David de Rosier
- *
- *  Licensed under the MIT license.
- *  http://www.opensource.org/licenses/mit-license.php
- *
- *  Revision: 26
- *  Date: 04.08.2011
- */
-
-/**
- * ECMAScript 5 Reference: 15.9.5.43
- * @returns {string}
- */
-Date.prototype.toISOString || (Date.prototype.toISOString = (function(){
-
-	var str = function(n, l) {
-		var str = String(n),
-			len = l || 2;
-		while( str.length < len )
-			str = '0' + str;
-		return str;
-	};
-
-	return function(){
-			return isFinite( this.getTime() )
-				? String(this.getUTCFullYear()).concat( '-', 
-					str(this.getUTCMonth() + 1), "-",
-					str(this.getUTCDate()), "T",
-					str(this.getUTCHours()), ":",
-					str(this.getUTCMinutes()), ":",
-					str(this.getUTCSeconds()), ".",
-			                str(this.getUTCMilliseconds(),3), "Z" )
-		                : 'Invalid Date';
-		};
-
-})() );
-
-/**
- * Numeric representation of current time (in milliseconds)
- * @returns {number} 
- * @example var timestamp = Date.now();
- * ECMAScript 5 Reference: 15.9.4.4
- */
-Date.now || (Date.now = function(){
-	return +new Date;
-});
-
-/**
- * Trims left and right side of the string. Method removes spaces, tabulators
- * and new line characters.
- * Method implements probably the fastest algorithm of JavaScript trim operation
- * (see http://blog.stevenlevithan.com/archives/faster-trim-javascript)
- * ECMAScript 5 Reference: 15.5.4.20
- * @returns {string} trimmed string
- */
-String.prototype.trim || (String.prototype.trim = function(){
-	return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-});
-
-var $AP = Array.prototype;
-
-/**
- * ECMAScript 5 Reference: 15.4.4.14
- * According to specification Array.prototype.indexOf.length is 1
- * @param searchElement - 
- * @param fromIndex {number} - start index (optional)
- * @returns {number} index of found element or -1
- * @example ['a','b','c'].indexOf('b') === 1;
- */
-$AP.indexOf || ($AP.indexOf = function(searchElement){
-	var len = this.length,
-		i = +arguments[1] || 0; // fromIndex
-
-	if( len === 0 || isNaN(i) || i >= len )
-		return -1;
-
-	if( i < 0 ) {
-		i = len + i;
-		i < 0 && (i = 0);
-	}
-
-	for( ; i < len; ++i ) {
-		if( i in this && this[i] ===  searchElement )
-			return i;
-	}
-
-	return -1;
-});
-
-/**
- * ECMAScript 5 Reference: 15.4.4.15
- * According to specification Array.prototype.lastIndexOf.length is 1
- * @param searchElement -
- * @param fromIndex {number} - start index (optional)
- * @returns {number} index of found element or -1
- * @example ['a','b','c'].indexOf('b') === 1;
- */
-$AP.lastIndexOf || ($AP.lastIndexOf = function(searchElement){
-	var len = this.length,
-        i = +arguments[1] || len-1; // fromIndex
-
-	if( len === 0 || isNaN(i) )
-		return -1;
-
-	if( i < 0 ) {
-		i = len + i;
-	} else if( i >= len ){
-		i = len-1;
-	}
-
-	for( ; i >= 0; --i ) {
-		if( i in this && this[i] ===  searchElement )
-			return i;
-	}
-
-	return -1;
-});
-
-/* /ddr-ECMA5 JavaScript library, version 1.0RC1
- */
+Implement ECMA5 functionality that is missing in ECMA3 AND is backwards compatible with ECMA3.
+This is the order of source choice:
+1) underscore.js
+2) https://developer.mozilla.org/en/JavaScript/Reference
+3) https://github.com/kriskowal/es5-shim
+*/
 
 
+Object.keys || (Object.keys = _.keys)
+
+
+// ES5 15.9.5.43
+// http://es5.github.com/#x15.9.5.43
+// This function returns a String value represent the instance in time
+// represented by this Date object. The format of the String is the Date Time
+// string format defined in 15.9.1.15. All fields are present in the String.
+// The time zone is always UTC, denoted by the suffix Z. If the time value of
+// this object is not a finite Number a RangeError exception is thrown.
+if (!Date.prototype.toISOString || (new Date(-62198755200000).toISOString().indexOf('-000001') === -1)) {
+    Date.prototype.toISOString = function toISOString() {
+        var result, length, value, year;
+        if (!isFinite(this)) {
+            throw new RangeError;
+        }
+
+        // the date time string format is specified in 15.9.1.15.
+        result = [this.getUTCMonth() + 1, this.getUTCDate(),
+            this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
+        year = this.getUTCFullYear();
+        year = (year < 0 ? '-' : (year > 9999 ? '+' : '')) + ('00000' + Math.abs(year)).slice(0 <= year && year <= 9999 ? -4 : -6);
+
+        length = result.length;
+        while (length--) {
+            value = result[length];
+            // pad months, days, hours, minutes, and seconds to have two digits.
+            if (value < 10) {
+                result[length] = "0" + value;
+            }
+        }
+        // pad milliseconds to have three digits.
+        return year + "-" + result.slice(0, 2).join("-") + "T" + result.slice(2).join(":") + "." +
+            ("000" + this.getUTCMilliseconds()).slice(-3) + "Z";
+    }
+}
+
+
+// ES5 15.9.5.44
+// http://es5.github.com/#x15.9.5.44
+// This function provides a String representation of a Date object for use by
+// JSON.stringify (15.12.3).
+if (!Date.prototype.toJSON) {
+    Date.prototype.toJSON = function toJSON(key) {
+        // When the toJSON method is called with argument key, the following
+        // steps are taken:
+
+        // 1.  Let O be the result of calling ToObject, giving it the this
+        // value as its argument.
+        // 2. Let tv be ToPrimitive(O, hint Number).
+        // 3. If tv is a Number and is not finite, return null.
+        // XXX
+        // 4. Let toISO be the result of calling the [[Get]] internal method of
+        // O with argument "toISOString".
+        // 5. If IsCallable(toISO) is false, throw a TypeError exception.
+        if (typeof this.toISOString != "function") {
+            throw new TypeError(); // TODO message
+        }
+        // 6. Return the result of calling the [[Call]] internal method of
+        //  toISO with O as the this value and an empty argument list.
+        return this.toISOString();
+
+        // NOTE 1 The argument is ignored.
+
+        // NOTE 2 The toJSON function is intentionally generic; it does not
+        // require that its this value be a Date object. Therefore, it can be
+        // transferred to other kinds of objects for use as a method. However,
+        // it does require that any such object have a toISOString method. An
+        // object is free to use the argument key to filter its
+        // stringification.
+    };
+}
+
+
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/now
+if (!Date.now) {
+  Date.now = function now() {
+    return +(new Date);
+  };
+}
+
+
+Array.isArray || (Array.isArray = _.isArray)
 
 
 /*
@@ -370,6 +288,8 @@ if (!JSON) {
 (function () {
     'use strict';
 
+    /* ** underscorex notice: already defined above
+
     function f(n) {
         // Format integers to have at least two digits.
         return n < 10 ? '0' + n : n;
@@ -394,7 +314,7 @@ if (!JSON) {
             Boolean.prototype.toJSON = function (key) {
                 return this.valueOf();
             };
-    }
+    }*/
 
     var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
         escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
@@ -535,7 +455,7 @@ if (!JSON) {
 // Otherwise, iterate through all of the keys in the object.
 
                 for (k in value) {
-                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                    if (/* ** Object.prototype.*/hasOwnProperty.call(value, k)) {
                         v = str(k, value);
                         if (v) {
                             partial.push(quote(k) + (gap ? ': ' : ':') + v);
@@ -622,7 +542,7 @@ if (!JSON) {
                 var k, v, value = holder[key];
                 if (value && typeof value === 'object') {
                     for (k in value) {
-                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        if (/* ** Object.prototype.*/hasOwnProperty.call(value, k)) {
                             v = walk(value, k);
                             if (v !== undefined) {
                                 value[k] = v;
@@ -691,6 +611,178 @@ if (!JSON) {
 
 /* / http://www.JSON.org/json2.js
  */
+
+
+if (isTest || !Function.prototype.bind) {
+
+	var bind = _.bind
+	Function.prototype.bind = function () {
+		var args = slice.call(arguments)
+		args.unshift(this)
+		return bind.apply(_, args)
+	}
+}
+
+
+// ES5 15.5.4.20
+// http://es5.github.com/#x15.5.4.20
+var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
+    "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
+    "\u2029\uFEFF";
+if (!String.prototype.trim || ws.trim()) {
+    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+    // http://perfectionkills.com/whitespace-deviations/
+    ws = "[" + ws + "]";
+    var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
+        trimEndRegexp = new RegExp(ws + ws + "*$");
+    String.prototype.trim = function trim() {
+        return String(this).replace(trimBeginRegexp, "").replace(trimEndRegexp, "");
+    };
+}
+
+
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
+        var n = 0;
+        if (arguments.length > 0) {
+            n = Number(arguments[1]);
+            if (n != n) { // shortcut for verifying if it's NaN
+                n = 0;
+            } else if (n != 0 && n != Infinity && n != -Infinity) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+        }
+        if (n >= len) {
+            return -1;
+        }
+        var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+        for (; k < len; k++) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
+    }
+}
+
+
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+if (!Array.prototype.lastIndexOf)
+{
+  Array.prototype.lastIndexOf = function (searchElement /*, fromIndex*/)
+  {
+    "use strict";
+
+    if (this == null)
+      throw new TypeError();
+
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (len === 0)
+      return -1;
+
+    var n = len;
+    if (arguments.length > 1)
+    {
+      n = Number(arguments[1]);
+      if (n != n)
+        n = 0;
+      else if (n != 0 && n != (1 / 0) && n != -(1 / 0))
+        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+    }
+
+    var k = n >= 0
+          ? Math.min(n, len - 1)
+          : len - Math.abs(n);
+
+    for (; k >= 0; k--)
+    {
+      if (k in t && t[k] === searchElement)
+        return k;
+    }
+    return -1;
+  };
+}
+
+
+if (isTest || !ap.every) {
+
+	var every = _.every
+	ap.every = function (iterator, context) {
+	
+		return every(this, iterator, context)
+	}
+}
+
+
+if (isTest || !ap.some) {
+
+	var some = _.some
+	ap.some = function (iterator, context) {
+	
+		return some(this, iterator, context)
+	}
+}
+
+
+if (isTest || !ap.forEach) {
+
+	var forEach = _.forEach
+	ap.forEach = function (iterator, context) {
+	
+		return forEach(this, iterator, context)
+	}
+}
+
+
+if (isTest || !ap.map) {
+
+	var map = _.map
+	ap.map = function (iterator, context) {
+	
+		return map(this, iterator, context)
+	}
+}
+
+
+if (isTest || !ap.filter) {
+
+	var filter = _.filter
+	ap.filter = function (iterator, context) {
+	
+		return filter(this, iterator, context)
+	}
+}
+
+
+if (isTest || !ap.reduce) {
+
+	var reduce = _.reduce
+	ap.reduce = function (iterator, memo) {
+	
+		return reduce(this, iterator, memo)
+	}
+}
+
+
+if (isTest || !ap.reduceRight) {
+
+	var reduceRight = _.reduceRight
+	ap.reduceRight = function (iterator, memo) {
+	
+		return reduceRight(this, iterator, memo)
+	}
+}
 
 
 
@@ -777,7 +869,7 @@ _.mixin({
 
         var array = []
         for (var k in object) {
-            if (!object.hasOwnProperty(k)) continue
+            if (!hasOwnProperty.call(object, k)) continue
 
 
             array.push([ k, object[k] ])
@@ -851,9 +943,13 @@ _.mixin({
 	}
 })
 
+
 // See http://www.irt.org/script/1031.htm
 _.MIN_INT = -9007199254740992
 _.MAX_INT = -_.MIN_INT
+
+
+
 
 var isRecursable = _.isRecursable
 

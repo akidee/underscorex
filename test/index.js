@@ -1,40 +1,186 @@
-/*
-// Remove native functions to demonstrate that the fallbacks work (does not work)
-delete
-	// Object.keys
-	Date.prototype.toISOString,
-	JSON.parse,
-	JSON.stringify,
-	Function.prototype.bind,
-	String.prototype.trim,
-	Array.prototype.indexOf,
-	Array.prototype.lastIndexOf,
-	Array.prototype.every,
-	Array.prototype.some,
-	Array.prototype.forEach,
-	Array.prototype.map,
-	Array.prototype.filter,
-	Array.prototype.reduce,
-	Array.prototype.reduceRight*/
-
-
-
-
-var _ = require('../index')
-
 '<srv'
 var a = require('assert')
 'srv>'
-
-/* <cli
+/*<cli
 var a = require('clientassert')
 a.onError(function (e) {
 
 	document.getElementById('error').innerHTML = JSON.stringify(e);
 })
-cli> */
+cli>*/
+
+
+
+
+/*
+// Replace native functions by dummies to demonstrate that the fallbacks (that must be teste) work
+
+// Paths to native functions with fallbacks
+
+var pathsToNatives = 'Function.prototype.bind \
+String.prototype.trim \
+Array.prototype.indexOf \
+Array.prototype.lastIndexOf \
+Array.prototype.every \
+Array.prototype.some \
+Array.prototype.forEach \
+Array.prototype.map \
+Array.prototype.filter \
+Array.prototype.reduce \
+Array.prototype.reduceRight'.split(' ')
+
+for (var i = 0; i < pathsToNatives.length; i++) {
+
+	var dummy = function () {}
+
+	eval(
+		pathsToNatives[i] + '= dummy; \
+		a.strictEqual(' + pathsToNatives[i] + ', dummy);'
+	)
+}
+*/
+
+
+
+
+__UNDERSCOREX_TEST = true
+
+var _ = require('../index')
+
+
+
 
 var slice = Array.prototype.slice
+
+
+
+
+// Function.prototype.bind
+
+var b = {},
+	c = ( function(a){ return [this, a]; } ).bind(b, 2)()
+	
+a.strictEqual(
+	c[0],
+	b
+)
+
+a.strictEqual(
+	c[1],
+	2
+)
+
+
+
+
+// Array.prototype.every
+
+var ar = [1, 2, 3, 4],
+	it = function (v, i, a) { return i > 0 && this.a },
+	ct = { a: 1 }
+	
+a.strictEqual(
+	ar.every(it, ct),
+	_.every(ar, it, ct)
+)
+
+a.strictEqual(
+	ar.every(it, null),
+	_.every(ar, it, null)
+)
+
+
+
+
+// Array.prototype.some
+
+var ar = [1, 2, 3, 4],
+	it = function (v, i, a) { return i > 3 && this.a },
+	ct = { a: 1 }
+	
+a.strictEqual(
+	ar.some(it, ct),
+	_.some(ar, it, ct)
+)
+
+a.strictEqual(
+	ar.some(it, null),
+	_.some(ar, it, null)
+)
+
+
+
+
+// Array.prototype.forEach
+
+var ar = [1, 2, 3, 4],
+	ar2 = [].concat(ar),
+	it = function (v, i, a) { a[i] = v * i + this.a },
+	ct = { a: 1 }
+
+ar.forEach(it, ct)
+_.forEach(ar2, it, ct)
+	
+a.deepEqual(
+	ar,
+	ar2
+)
+
+
+
+
+// Array.prototype.map
+
+var ar = [1, 2, 3, 4],
+	it = function (v, i, a) { return v * i + this.a },
+	ct = { a: 1 }
+
+a.deepEqual(
+	ar.map(it, ct),
+	_.map(ar, it, ct)
+)
+
+
+
+
+// Array.prototype.filter
+
+var ar = [1, 2, 3, 4],
+	it = function (v, i, a) { return this.a && i > 1 },
+	ct = { a: 1 }
+	
+a.deepEqual(
+	ar.filter(it, ct),
+	_.filter(ar, it, ct)
+)
+
+
+
+
+// Array.prototype.reduce
+
+var ar = [1, 2, 3, 4],
+	it = function (p, c, i, a) { return p + c * i + a.length },
+	init = 0
+	
+a.deepEqual(
+	ar.reduce(it, init),
+	_.reduce(ar, it, init)
+)
+
+
+
+
+// Array.prototype.reduceRight
+
+var ar = [1, 2, 3, 4],
+	it = function (p, c, i, a) { return p + c * i + a.length },
+	init = 0
+	
+a.deepEqual(
+	ar.reduceRight(it, init),
+	_.reduceRight(ar, it, init)
+)
 
 
 
@@ -298,60 +444,8 @@ a.strictEqual(
 
 
 
-// Object.keys
-
-a.strictEqual(
-	_.keys,
-	Object.keys
-)
-
-
-
-
-// Function.prototype.bind
-
-var b = {},
-	c = ( function(a){ return [this, a]; } ).bind(b, 2)()
-	
-a.strictEqual(
-	c[0],
-	b
-)
-
-a.strictEqual(
-	c[1],
-	2
-)
-
-
-
-
-// Array.prototype.indexOf
-
-a.strictEqual(
-	[1, 2].indexOf(2),
-	1
-)
-
-
-
-
-// Array.prototype.lastIndexOf
-
-a.strictEqual(
-	[1, 2, 1].lastIndexOf(1),
-	2
-)
-
-
-
-
-// ...
-
-
-
-
 _.log('Passed')
-
-if (typeof window !== 'undefined')
-	document.body.style.backgroundColor = 'green'
+/*<cli
+document.body.style.backgroundColor = 'green'
+document.body.innerHTML = 'Passed'
+cli>*/

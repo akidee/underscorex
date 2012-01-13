@@ -2,7 +2,7 @@
   __  ______  ____/ /__  ___________________  ________  _  __
  / / / / __ \/ __  / _ \/ ___/ ___/ ___/ __ \/ ___/ _ \| |/_/
 / /_/ / / / / /_/ /  __/ /  (__  ) /__/ /_/ / /  /  __/>  <
-\__,_/_/ /_/\__,_/\___/_/  /____/\___/\____/_/   \___/_/|_|  v0.3.1
+\__,_/_/ /_/\__,_/\___/_/  /____/\___/\____/_/   \___/_/|_|  v0.3.2
 
 
 
@@ -19,7 +19,7 @@ Underscorex are some basic extensions for underscore.js
 
 Features
 
-1. Make ECMA5 functionality, which is backwards compatible, available to all JavaScript engines
+1. Make ECMA5 functionality, which is backwards compatible, available to all JavaScript engines:
 
   Object.keys
   Date.prototype.toISOString
@@ -33,13 +33,13 @@ Features
   Array.prototype.every/some/forEach/map/filter
   Array.prototype.reduce/reduceRight
 
-  Functionaly that cannot be fully implemented with ECMA3 is not added.
+  Functionality that cannot be fully implemented with ECMA3 is not added.
 
-  See http://kangax.github.com/es5-compat-table/
+  (See http://kangax.github.com/es5-compat-table/ )
 
-2. Functionality beyond ECMA5 - functions that are already included in underscore.js: http://documentcloud.github.com/underscore
+2. Functionality beyond ECMA5 is included in underscore.js: http://documentcloud.github.com/underscore
 
-3. My own mixins
+3. My own mixins:
 
   _.log(...)
     Alias of console.log. Can be called even if the console object is not defined
@@ -106,35 +106,40 @@ var _ = require('underscorex')
 	
 
 
-Use it in the browser (with Yabble)
+In the browser (standalone)
 
-The best way to use CommonJS modules with their dependencies on the client is wrapping them and loading them asynchronously with Yabble. Put /client/yabble/underscore.js to the correct path on your server, and that's it. The file already includes underscore.js v1.2.3
+/client/standalone/underscorex.js is the minified version
 
-1) To simply use underscorex:
-
-<script src="https://raw.github.com/akidee/yabble/master/lib/yabble.js"></script>
-<script src="/js/underscorex.js"></script>
+<script src="underscore.js"></script> <!-- underscore.js version of your choice -->
+<script src="underscorex.js"></script>
 <script>
 
 	_.log('ready')
 
 </script>
 
-2) Pro mode: Load your project asynchronously, in this case only underscorex:
 
-<script src="https://raw.github.com/akidee/yabble/master/lib/yabble.js"></script>
+
+
+In the browser (AMD)
+
+The best way to use CommonJS modules with their dependencies on the client is wrapping them and loading them asynchronously with RequireJS. Copy /client/requirejs/underscore.js to the correct path on your server. The file includes underscore.js v1.3.0
+
+Example - definition of your own library with underscorex as a dependency:
+
+<script src="/path/to/require.js"></script>
 <script>
 
-	require.useScriptTags()
-	require.setModuleRoot('/js')
-	require.ensure([ 'underscorex' ], function (require) {
+	require.config({
+		baseUrl: '/js'
+	})
+
+	reqire([ 'underscorex' ], function (_) {
 
 		_.log('ready')
 	})
 
 </script>
-
-It is recommended to serve static files with gzip!
 
 
 
@@ -142,7 +147,7 @@ It is recommended to serve static files with gzip!
 Tested in
 
   node.js 0.4-latest
-  IE 5.5-8, FF 3-8, Chrome 1-15, Opera 10-11.5, Safari 4-5.1.2
+  IE 5.5+, FF 3+, Chrome 1+, Opera 10+, Safari 4+
   Mobile Safari 4.0
 
 
@@ -150,5 +155,6 @@ Tested in
 
 Used code
 
-http://code.google.com/p/ddr-ecma5/
+https://developer.mozilla.org/en/JavaScript/Reference
+https://github.com/kriskowal/es5-shim
 http://www.JSON.org/json2.js
