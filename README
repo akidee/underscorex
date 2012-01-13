@@ -99,7 +99,7 @@ npm install underscorex
 
 
 
-Use it in node
+In node.js
 
 var _ = require('underscorex')
 
