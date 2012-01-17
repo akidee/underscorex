@@ -28,5 +28,8 @@
 		"basic",
 		"javascript",
 		"extension"
-	]
+	],
+	"scripts": {
+		"test": "node test/all.js"
+	}
 }
