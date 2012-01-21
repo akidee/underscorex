@@ -280,9 +280,18 @@ Array.isArray || (Array.isArray = _.isArray)
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
+/* ** underscorex notice: This code seems to fail in IE under some curcumstances
+
 var JSON;
 if (!JSON) {
     JSON = {};
+}*/
+
+var root = typeof window !== 'undefined'
+	? window
+	: global
+if (!root.JSON) {
+    root.JSON = {}
 }
 
 (function () {
