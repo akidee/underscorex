@@ -1,6 +1,6 @@
 /*
 underscorex v0.3.3
-(c) 2010-2011 Andreas Kalsch
+(c) 2010-2012 Andreas Kalsch
 https://github.com/akidee/underscorex
 */
 

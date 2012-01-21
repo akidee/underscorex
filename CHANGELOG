@@ -1,3 +1,6 @@
+0.3.3 2012-01-21
+	Fixed JSON shim (works in IE now)
+
 0.3.2 2012-01-13
 	Replaced ddr-ecma5 by es5-shim and Mozilla code
 	Completed tests
