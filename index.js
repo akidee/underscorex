@@ -1,5 +1,5 @@
 /*
-underscorex v0.3.2
+underscorex v0.3.3
 (c) 2010-2011 Andreas Kalsch
 https://github.com/akidee/underscorex
 */
@@ -14,13 +14,22 @@ if (typeof require === 'function') {
 // else window._ exists
 
 
+var root = typeof window === 'object'
+	? window
+	: (
+		typeof global === 'object'
+			? global
+			: {}
+	)
+	
+
 
 
 var ap = Array.prototype,
 	slice = ap.slice,
 	each = _.each,
 	hasOwnProperty = Object.prototype.hasOwnProperty,
-	isTest = typeof __UNDERSCOREX_TEST !== 'undefined'
+	isTest = typeof root.__UNDERSCOREX_TEST !== 'undefined'
 	
 
 
@@ -287,9 +296,6 @@ if (!JSON) {
     JSON = {};
 }*/
 
-var root = typeof window !== 'undefined'
-	? window
-	: global
 if (!root.JSON) {
     root.JSON = {}
 }

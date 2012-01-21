@@ -5,45 +5,22 @@ var a = require('assert')
 var a = require('clientassert')
 a.onError(function (e) {
 
-	document.getElementById('error').innerHTML = JSON.stringify(e);
+	document.getElementById('error').innerHTML = JSON.stringify(e) + JSON.stringify(e.stack);
 })
 cli>*/
 
 
 
 
-/*
-// Replace native functions by dummies to demonstrate that the fallbacks (that must be teste) work
-
-// Paths to native functions with fallbacks
-
-var pathsToNatives = 'Function.prototype.bind \
-String.prototype.trim \
-Array.prototype.indexOf \
-Array.prototype.lastIndexOf \
-Array.prototype.every \
-Array.prototype.some \
-Array.prototype.forEach \
-Array.prototype.map \
-Array.prototype.filter \
-Array.prototype.reduce \
-Array.prototype.reduceRight'.split(' ')
-
-for (var i = 0; i < pathsToNatives.length; i++) {
-
-	var dummy = function () {}
-
-	eval(
-		pathsToNatives[i] + '= dummy; \
-		a.strictEqual(' + pathsToNatives[i] + ', dummy);'
+var root = typeof window === 'object'
+	? window
+	: (
+		typeof global === 'object'
+			? global
+			: {}
 	)
-}
-*/
 
-
-
-
-__UNDERSCOREX_TEST = true
+root.__UNDERSCOREX_TEST = true
 
 var _ = require('../index')
 
@@ -51,6 +28,16 @@ var _ = require('../index')
 
 
 var slice = Array.prototype.slice
+
+
+
+
+// JSON
+
+a.strictEqual(
+	typeof JSON,
+	'object'
+)
 
 
 
