@@ -800,6 +800,29 @@ if (isTest || !ap.reduceRight) {
 }
 
 
+// Default properties should be exported to JSON, despite they are not enumerable
+if (!Error.prototype.toJSON) {
+
+    var defaultProperties = [ 'name', 'message' ],
+        defaultPropertiesL = defaultProperties.length
+
+    Error.prototype.toJSON = function () {
+
+        var copy = _.extend({}, this),
+            k
+
+        for (var i = 0; i < defaultPropertiesL; i++) {
+
+            k = defaultProperties[i]
+            if (hasOwnProperty.call(this, k))
+                copy[k] = this[k]
+        }
+
+        return copy
+    }
+}
+
+
 
 
 /* Own mixins

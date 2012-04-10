@@ -1,13 +1,4 @@
-'<srv'
 var a = require('assert')
-'srv>'
-/*<cli
-var a = require('clientassert')
-a.onError(function (e) {
-
-	document.getElementById('error').innerHTML = JSON.stringify(e) + JSON.stringify(e.stack);
-})
-cli>*/
 
 
 
@@ -167,6 +158,43 @@ var ar = [1, 2, 3, 4],
 a.deepEqual(
 	ar.reduceRight(it, init),
 	_.reduceRight(ar, it, init)
+)
+
+
+
+
+// Error.prototype.toJSON
+
+	// without explicit properties
+
+var e = new Error,
+	json = e.toJSON()
+a.strictEqual(
+	json.hasOwnProperty('name'),
+	false
+)
+a.strictEqual(
+	json.hasOwnProperty('message'),
+	false
+)
+
+	// with explicit properties
+
+e = new Error('message!')
+e.name = 'name'
+e.abc = 5
+json = e.toJSON()
+a.strictEqual(
+	e.name,
+	'name'
+)
+a.strictEqual(
+	e.message,
+	'message!'
+)
+a.strictEqual(
+	e.abc,
+	5
 )
 
 
@@ -431,8 +459,4 @@ a.strictEqual(
 
 
 
-_.log('Passed')
-/*<cli
-document.body.style.backgroundColor = 'green'
-document.body.innerHTML = 'Passed'
-cli>*/
+_.log('Passed ' + module.id)
